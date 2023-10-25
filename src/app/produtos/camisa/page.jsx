@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Camisa() {
   return (
@@ -15,7 +14,6 @@ export default function Camisa() {
                     height={300}
                     />
             </figure>
-            <p><Link href="/">Voltar...</Link></p>
         </div>
     </div>
   )

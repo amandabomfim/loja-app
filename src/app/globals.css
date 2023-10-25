@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+ 
+@layer components{
+    .cabecalho{
+        @apply bg-teal-600 text-white;
+
+        & ul{
+            @apply flex justify-center;
+                & li{
+                    @apply  inline m-5;
+
+                    & a{
+                        @apply block font-extrabold hover:bg-white hover:text-black rounded-md transition-all ease-out duration-300 p-2;
+                    }
+                }
+        }
+
+    }
+}
+
+@layer utilities {
+  .erro404 {
+        @apply bg-blue-500 font-extrabold h-full w-full;
+
+        & h1{ 
+            @apply text-center mb-5;
+        }
+
+        & img{
+            @apply mx-auto w-50;
+        }
+
+        & p{
+            @apply text-center mt-5;
+        }
+  }
+}
