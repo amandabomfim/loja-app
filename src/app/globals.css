@@ -31,6 +31,14 @@
         }
 
     }
+
+    .rodape{
+        @apply bg-teal-600 text-white h-20 fixed w-full bottom-0;
+        & p{
+          @apply w-full text-center p-6;  
+        }
+
+    }
 }
 
 @layer utilities {
