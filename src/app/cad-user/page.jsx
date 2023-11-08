@@ -3,13 +3,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Login() {
+export default function CadUser() {
 
   const navigate = useRouter();
 
   //Este useState, representa o objeto usuário, enquanto está sendo preenchido no form e
   // em qualquer momento dentro do componente!!
   const [usuario, setUsuario] = useState({
+    nome:"",
     email: "",
     senha: "",
   });
@@ -18,9 +19,9 @@ export default function Login() {
   const [classeLoginMsg, setClasseLoginMsg] = useState("");
 
   useEffect(() => {
-    if(msg == "Usuário Validado com Sucesso!"){
+    if(msg == "Cadastro realizado com sucesso!"){
       setClasseLoginMsg("login-sucesso");
-    }else if(msg == "Usuário e ou Senha inválidos!!"){
+    }else if(msg == "Ocorreu um erro no preenchimento."){
       setClasseLoginMsg("login-erro");
     }else{
       setClasseLoginMsg("login-none");
@@ -44,7 +45,7 @@ export default function Login() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/base/base-users/0",
+        "http://localhost:3000/api/base/base-cad",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -53,10 +54,10 @@ export default function Login() {
       );
 
       if (response.ok) {
-        const status = await response.json();
-        if (status.status) {
+        const obj = await response.json();
+        if (obj) {
             
-            setmsg("Usuário Validado com Sucesso!");
+            setmsg("Cadastro realizado com sucesso!");
             
             setTimeout(()=>{
                 setmsg("");
@@ -65,7 +66,7 @@ export default function Login() {
             },5000);
         } else {
           
-            setmsg("Usuário e ou Senha inválidos!!");
+            setmsg("Ocorreu um erro no preenchimento.");
             setTimeout(()=>{
                 setmsg("");
                 setUsuario({
@@ -82,14 +83,25 @@ export default function Login() {
 
   return (
     <div>
-      <h1>Informações de Usuários:</h1>
+      <h1>Cadastro de Usuários:</h1>
 
       <h2 className={classeLoginMsg}>{msg}</h2>
 
       <div>
         <form onSubmit={handleSubmit}>
           <fieldset>
-            <legend>LOGIN</legend>
+            <legend>CADASTRO</legend>
+            <div>
+              <label htmlFor="idNome">Nome:</label>
+              <input
+                type="text"
+                name="nome"
+                id="idNome"
+                placeholder="Digite seu Nome."
+                value={usuario.nome}
+                onChange={handleChange}
+              />
+            </div>
             <div>
               <label htmlFor="idEmail">Email:</label>
               <input
@@ -113,10 +125,10 @@ export default function Login() {
               />
             </div>
             <div>
-              <button>LOGIN</button>
+              <button>CADASTRAR</button>
             </div>
             <div>
-              <p>Se você ainda não possui registro.  <Link href="/cad-user">CLIQUE AQUI</Link></p>
+              <p>Se você já possui registro.  <Link href="/login">CLIQUE AQUI</Link></p>
             </div>
           </fieldset>
         </form>
