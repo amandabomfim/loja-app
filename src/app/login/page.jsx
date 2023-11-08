@@ -1,16 +1,31 @@
 "use client";
-import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Login() {
+
+  const navigate = useRouter();
+
   //Este useState, representa o objeto usuário, enquanto está sendo preenchido no form e
   // em qualquer momento dentro do componente!!
   const [usuario, setUsuario] = useState({
     email: "",
-    password: "",
+    senha: "",
   });
 
   const [msg, setmsg] = useState("");
+  const [classeLoginMsg, setClasseLoginMsg] = useState("");
+
+  useEffect(() => {
+    if(msg == "Usuário Validado com Sucesso!"){
+      setClasseLoginMsg("login-sucesso");
+    }else if(msg == "Usuário e ou Senha inválidos!!"){
+      setClasseLoginMsg("login-erro");
+    }else{
+      setClasseLoginMsg("login-none");
+    }
+  }, [msg])
+  
 
   const handleChange = (e) => {
     //Destructuring dos campos que estão sendo digitados!
@@ -39,23 +54,23 @@ export default function Login() {
       if (response.ok) {
         const status = await response.json();
         if (status.status) {
+            
             setmsg("Usuário Validado com Sucesso!");
+            
             setTimeout(()=>{
                 setmsg("");
-            },3000);
-
-          redirect("/");
+                navigate.push("/");
+            },5000);
         } else {
           
-            setmsg("Email ou senha inválidos!");
+            setmsg("Usuário e ou Senha inválidos!!");
             setTimeout(()=>{
                 setmsg("");
-            },3000);
-
-          setUsuario({
-            email: "",
-            password: "",
-          });
+                setUsuario({
+                  email:"",
+                  senha:""
+                });
+            },5000);
         }
       }
     } catch (error) {
@@ -97,8 +112,9 @@ export default function Login() {
             </div>
           </fieldset>
         </form>
-        <h2>{msg}</h2>
       </div>
+
+      <h2 className={classeLoginMsg}>{msg}</h2>
     </div>
   );
 }
